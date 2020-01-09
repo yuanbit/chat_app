@@ -22,17 +22,6 @@ def index():
         username = reg_form.username.data
         password = reg_form.password.data
 
-        # Check username exists
-        # Database already has a constraint of unique username in column
-        user_object = User.query.filter_by(username=username).first()
-
-        # Check username duplicate
-        if user_object:
-
-            return "Someone else has taken this username!"
-        # Get username associated with user
-        # user_object.username
-
         # Add user to database
         user = User(username=username, password=password)
         db.session.add(user)
