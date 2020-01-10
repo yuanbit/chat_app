@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from wtform_fields import *
 from models import *
 
@@ -11,11 +11,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://uglcakesytydkw:a531b221acaea
 
 db = SQLAlchemy(app)
 
+# Route for homepage/registration page
 @app.route("/", methods=['GET', 'POST'])
 # Renders the fields
 def index():
 
     reg_form = RegistrationForm()
+
+    # Update DB if validation success
     # Check if POST method was used and
     # if all validation was cleared
     if reg_form.validate_on_submit():
@@ -27,10 +30,27 @@ def index():
         db.session.add(user)
         db.session.commit()
 
-        return "Inserted into DB!"
+        # Take user to login page if successful registration
+        return redirect(url_for('login'))
 
     # Display html
     return render_template("index.html", form=reg_form)
+
+# Route for login page
+@app.route("/login", methods=['GET', 'POST'])
+
+def login():
+
+    login_form = LoginForm()
+
+    # Allow login if validation success (no error)
+    if login_form.validate_on_submit():
+
+        # Return a post login page
+        return "Loggin in, finally!"
+
+    return render_template("login.html", form=login_form)
+
 
 if __name__ == "__main__":
 
