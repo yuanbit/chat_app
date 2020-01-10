@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, flash
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from wtform_fields import *
 from models import *
@@ -45,7 +45,11 @@ def index():
         db.session.add(user)
         db.session.commit()
 
-        # Take user to login page if successful registration
+        # Flash sends the message only once
+        # Flash notification to user using bootstrap class
+        flash('Registered succesfully. Please login.', 'success')
+
+        # Redirect user to login page if successful registration
         return redirect(url_for('login'))
 
     # Display html
@@ -77,10 +81,13 @@ def login():
 # Route (protected) for chat application page - only a logged in user can view
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
-
+    # User access protected chat page w/o logging in
     if not current_user.is_authenticated:
-        # Return a post login page
-        return "Please login before accessing chat"
+        # Error message to match bootstrap class
+        flash('Please login.', 'danger')
+        # Redirect to login page
+        return redirect(url_for('login'))
+
     return "Chat with me"
 
 # Route for logout
@@ -89,8 +96,9 @@ def chat():
 def logout():
 
     logout_user()
-
-    return "Logged out using flask_login"
+    flash('You have logged out succesfully', 'success')
+    # Redirect to login page
+    return redirect(url_for('login'))
 
 
 if __name__ == "__main__":

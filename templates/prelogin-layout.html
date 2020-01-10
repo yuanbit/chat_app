@@ -6,6 +6,20 @@
     <title>{% block title %}{% endblock %} - RChat</title>
   </head>
   <body>
+    <!--Flash messages-->
+    <!--Populates the variable messages with a list of tuple of all messages that are flashed -->
+    <!-- e.g. ('category', 'message') -->
+    <!--Access category name -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+
+        <!--Display category and message text-->
+        Category: {{ messages[0][0] }}
+        {{ messages[0][1] }}
+
+      {% endif %}
+    {% endwith %}
+    <!--Display content for individual pages-->
     {% block content %}
 
     {% endblock %}
