@@ -1,9 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
 db = SQLAlchemy()
 
-class User(db.Model):
-    """ User model """
+class User(UserMixin, db.Model):
+    """ User model - define users
+
+    UserMixin - tells flask_login about user
+    """
 
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
