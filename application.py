@@ -1,5 +1,8 @@
+import time
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
+from flask_socketio import SocketIO, send, emit, join_room, leave_room
+
 from wtform_fields import *
 from models import *
 
@@ -11,6 +14,11 @@ app.secret_key = 'replace later'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://uglcakesytydkw:a531b221acaeaf035634fb709b4bbe8d84995411718c1101104d7866fdfcdc70@ec2-174-129-33-201.compute-1.amazonaws.com:5432/d1jr4qvs8g9vgl'
 
 db = SQLAlchemy(app)
+
+# Initialize Flask-SocketIO
+socketio = SocketIO(app)
+
+ROOMS = ['lounge', 'news', 'games', 'coding']
 
 # Configure flask login
 login = LoginManager(app)
@@ -81,18 +89,16 @@ def login():
 # Route (protected) for chat application page - only a logged in user can view
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
-    # User access protected chat page w/o logging in
-    if not current_user.is_authenticated:
-        # Error message to match bootstrap class
-        flash('Please login.', 'danger')
-        # Redirect to login page
-        return redirect(url_for('login'))
-
-    return "Chat with me"
+    # # User access protected chat page w/o logging in
+    # if not current_user.is_authenticated:
+    #     # Error message to match bootstrap class
+    #     flash('Please login.', 'danger')
+    #     # Redirect to login page
+    #     return redirect(url_for('login'))
+    return render_template('chat.html', username=current_user.username, rooms=ROOMS)
 
 # Route for logout
 @app.route("/logout", methods=['GET'])
-#@login_required
 def logout():
 
     logout_user()
@@ -100,8 +106,45 @@ def logout():
     # Redirect to login page
     return redirect(url_for('login'))
 
+# Create event handler/bucket
+@socketio.on('message')
+def message(data):
+    """ Tell SocketIO what actions to take when clients send message to an event bucket """
+
+    print(f"\n\n{data}\n\n")
+    # Broadcast message received to all connected clients
+    # Default push data to clients
+    # %b - abbreviated month name
+    # %d - day of month
+    # %I - hour
+    # %p - AM or PM
+    # %M - minutes
+    time_stamp = time.strftime('%b-%d %I:%M%p', time.localtime())
+
+    send({'msg': data['msg'], 'username': data['username'], 'time_stamp': time_stamp}, room=data['room'])
+    # Send data to custom event bucket
+    #emit('some-event', 'this is a custom event message')
+
+# @socketio.on('join')
+# def join(data):
+#
+#     join_room(data['room'])
+#
+#     send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
+#
+# @socketio.on('leave')
+# def leave(data):
+#
+#     leave_room(data['room'])
+#
+#     send({'msg': data['username'] + " has left the " + data['room'] + " room."}, room=data['room'])
+
+
 
 if __name__ == "__main__":
 
     # Run in debug method, don't have to re-start server
-    app.run(debug=True)
+    #app.run(debug=True)
+
+    # Start the server, restart server when file changed
+    socketio.run(app, debug=True)

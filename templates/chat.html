@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <!--Navigation bar-->
+    <nav>
+
+    </nav>
+
+    <!--Main section-->
+    <div id="main-section">
+      <!--Room selection side bar-->
+      <nav id="sidebar">
+        <h4>ROOMS</h4>
+        {% for room in rooms %}
+          <p class="select-room">{{ room|title }}</p>
+        {% endfor %}
+      </nav>
+
+      <!--Message area-->
+      <div id="rightside-pannel">
+        <!--Display message-->
+        <div id="display-message-section">
+
+        </div> <!--end of display-->
+
+        <!--Input message-->
+        <div id="input-area">
+          <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
+
+          <button type="button" id="send_message">SEND</button>
+        </div> <!--end of input-area-->
+
+      </div> <!--end of rightside-pannel-->
+
+    </div> <!--end of main-section-->
+
+    <!-- Get username -->
+    <script type="text/javascript">
+      const username = `{{ username }}`;
+    </script>
+
+    <!-- SocketIO JS -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+
+    <!-- Custom SocketIO JS -->
+    <script src="{{ url_for('static', filename='scripts/test1.js') }}"></script>
+
+  </body>
+</html>
