@@ -112,6 +112,10 @@ def message(data):
     """ Tell SocketIO what actions to take when clients send message to an event bucket """
 
     print(f"\n\n{data}\n\n")
+
+    msg = data["msg"]
+    username = data["username"]
+    room = data["room"]
     # Broadcast message received to all connected clients
     # Default push data to clients
     # %b - abbreviated month name
@@ -121,30 +125,32 @@ def message(data):
     # %M - minutes
     time_stamp = time.strftime('%b-%d %I:%M%p', time.localtime())
 
-    send({'msg': data['msg'], 'username': data['username'], 'time_stamp': time_stamp}, room=data['room'])
+    send({"username": username, "msg": msg, "time_stamp": time_stamp}, room=room)
     # Send data to custom event bucket
     #emit('some-event', 'this is a custom event message')
 
-# @socketio.on('join')
-# def join(data):
-#
-#     join_room(data['room'])
-#
-#     send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
-#
-# @socketio.on('leave')
-# def leave(data):
-#
-#     leave_room(data['room'])
-#
-#     send({'msg': data['username'] + " has left the " + data['room'] + " room."}, room=data['room'])
+@socketio.on('join')
+def on_join(data):
+    """User joins a room"""
 
+    username = data["username"]
+    room = data["room"]
+    join_room(room)
 
+    # Broadcast that new user has joined
+    send({"msg": username + " has joined the " + room + " room."}, room=room)
+
+@socketio.on('leave')
+def on_leave(data):
+    """User leaves a room"""
+
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+
+    send({"msg": username + " has left the room"}, room=room)
 
 if __name__ == "__main__":
 
-    # Run in debug method, don't have to re-start server
-    #app.run(debug=True)
-
     # Start the server, restart server when file changed
-    socketio.run(app, debug=True)
+    app.run(debug=True)
