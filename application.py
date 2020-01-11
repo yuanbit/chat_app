@@ -42,14 +42,19 @@ def index():
     # Check if POST method was used and
     # if all validation was cleared
     if reg_form.validate_on_submit():
+        # Obtain data from fields using flask wtform
+        first_name = reg_form.first_name.data
+        last_name = reg_form.last_name.data
         username = reg_form.username.data
+        email = reg_form.email.data
         password = reg_form.password.data
 
         # Hash plain text password
         hashed_pswd = pbkdf2_sha256.hash(password)
 
         # Add user to database
-        user = User(username=username, password=hashed_pswd)
+        user = User(first_name=first_name, last_name=last_name, username=username, email=email, password=hashed_pswd)
+
         db.session.add(user)
         db.session.commit()
 
@@ -89,12 +94,12 @@ def login():
 # Route (protected) for chat application page - only a logged in user can view
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
-    # # User access protected chat page w/o logging in
-    # if not current_user.is_authenticated:
-    #     # Error message to match bootstrap class
-    #     flash('Please login.', 'danger')
-    #     # Redirect to login page
-    #     return redirect(url_for('login'))
+    # User access protected chat page w/o logging in
+    if not current_user.is_authenticated:
+        # Error message to match bootstrap class
+        flash('Please login.', 'danger')
+        # Redirect to login page
+        return redirect(url_for('login'))
     return render_template('chat.html', username=current_user.username, rooms=ROOMS)
 
 # Route for logout
@@ -105,6 +110,11 @@ def logout():
     flash('You have logged out succesfully', 'success')
     # Redirect to login page
     return redirect(url_for('login'))
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('404.html'), 404
 
 # Create event handler/bucket
 @socketio.on('message')

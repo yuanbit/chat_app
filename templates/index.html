@@ -1,3 +1,6 @@
+<!--Registration Page-->
+
+<!-- Import macros -->
 {% from 'form_helper.html' import displayField %}
 
 <!--Extend layout-->
@@ -8,21 +11,44 @@
 
 {% block content %}
   <h1>Get started</h1>
+  <p>First time here? Register to start using Rchat</p>
 
   <!--Render validators-->
   <form action="{{ url_for('index')}}", method="POST">
 
-    {{ displayField(form.username, 'Username', autocomplete='off', autofocus=true)}}
+    <div class="reg_label">First name
+      {{ displayField(form.first_name, 'First name', autocomplete='off')}}
+    </div>
 
-    {{ displayField(form.password, 'Password')}}
+    <div class="reg_label">Last name
+      {{ displayField(form.last_name, 'Last name')}}
+    </div>
 
-    {{ displayField(form.confirm_pswd, 'Retype Password')}}
+    <div class="reg_label">Username
+      {{ displayField(form.username, 'Username')}}
+    </div>
 
-    <div>
-      {{ form.submit_button }}
+    <div class="reg_label">Email
+      {{ displayField(form.email, 'Email')}}
+    </div>
+
+    <div class="reg_label">Password
+      {{ displayField(form.password, 'Password')}}
+    </div>
+
+    <div class="reg_label">Password confirmation
+      {{ displayField(form.confirm_pswd, 'Retype Password')}}
+    </div>
+
+    <div class="form-group">
+      <input type="submit" value="Create" class="btn btn-warning">
     </div>
 
     <!--use app's secret key-->
     {{ form.csrf_token }}
   </form>
+
+  <hr>
+
+  <p>Already registered? <a href={{url_for('login')}}>Login here</a>.</p>
 {% endblock %}

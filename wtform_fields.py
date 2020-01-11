@@ -24,7 +24,13 @@ def invalid_credentials(form, field):
 class RegistrationForm(FlaskForm):
     """ Registration form """
 
+    first_name = StringField('first_name_label', validators=[InputRequired(message="First name required"), Length(max=100, message="First name must be less than 100 characters")])
+
+    last_name = StringField('last_name_label', validators=[InputRequired(message="Last name required"), Length(max=100, message="Last name must be less than 100 characters")])
+
     username = StringField('username_label', validators=[InputRequired(message="Username required"), Length(min=4, max=25, message="Username must be between 4 and 25 characters")])
+
+    email = StringField('email_label', validators=[InputRequired(message="Email required"), Length(max=100, message="Email must be under 100 characters")])
 
     password = PasswordField('password_label', validators=[InputRequired(message="Password required"), Length(min=4, max=25, message="Password must be between 4 and 25 characters")])
 
@@ -36,9 +42,18 @@ class RegistrationForm(FlaskForm):
         """ Username duplicate checker """
         # Get username in DB
         user_object = User.query.filter_by(username=username.data).first()
-        # If username is duplicate
+
+        # If the user object was returned (username exists)
         if user_object:
-            raise ValidationError("Username already exists. Select a different username.")
+            raise ValidationError("Username already exists. Please select a different username.")
+
+    def validate_email(self, email):
+        """ Email duplicate checker """
+
+        user_object = User.query.filter_by(email=email.data).first()
+        # If email exists
+        if user_object:
+            raise ValidationError("This email address is already registered. Please select a different email")
 
 
 class LoginForm(FlaskForm):
