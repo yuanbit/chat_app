@@ -5,20 +5,20 @@ from passlib.hash import pbkdf2_sha256
 from models import User
 
 def invalid_credentials(form, field):
-    """ Username and password checker """
+    """ Email and password checker """
 
     # Check username and password is valid
-    username_entered = form.username.data
+    email_entered = form.email.data
     password_entered = field.data
 
     # Check if username exist in DB
-    user_object = User.query.filter_by(username=username_entered).first()
+    user_object = User.query.filter_by(email=email_entered).first()
     # If username doesn't exist
     if user_object is None:
-        raise ValidationError("Username or password is incorrect")
+        raise ValidationError("Email or password is incorrect")
     # Check if password match password in DB
     elif not pbkdf2_sha256.verify(password_entered, user_object.password):
-        raise ValidationError("Username or password is incorrect")
+        raise ValidationError("Email or password is incorrect")
 
 
 class RegistrationForm(FlaskForm):
@@ -60,7 +60,7 @@ class LoginForm(FlaskForm):
     """ Login form """
 
     # Add <input required=""> required tag in html
-    username = StringField('username_label', validators=[InputRequired(message="Username required")])
+    email = StringField('email_label', validators=[InputRequired(message="Email required")])
 
     password = PasswordField('password_label', validators=[InputRequired(message="Password required"), invalid_credentials])
 

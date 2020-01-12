@@ -77,8 +77,8 @@ def login():
     # Allow login if validation success (no error)
     if login_form.validate_on_submit():
 
-        # Get user object (username submitted in login form) from DB
-        user_object = User.query.filter_by(username=login_form.username.data).first()
+        # Get user object (email submitted in login form) from DB
+        user_object = User.query.filter_by(email=login_form.email.data).first()
         # Load user to login
         login_user(user_object)
         # Redirect user to chat route
