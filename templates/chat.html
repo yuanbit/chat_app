@@ -52,9 +52,17 @@
 
                 <!-- Sidebar start -->
                 <nav id="sidebar">
-                    <h4>Rooms</h4>
+                    <div class="online_label">Online users</div>
+                    <div id="display-online-users">
+                      <!-- {% for username in usernames %}
+                        <li>{{ username }}</li>
+                      {% endfor %} -->
+                      <!-- {% for user in online_users %}
+                        <li>{{ user }}</li>
+                      {% endfor %} -->
+                    </div>
                     {% for room in rooms %}
-                        <p id="{{ room|title }}" class="select-room cursor-pointer">{{ room|title }}</p>
+                        <p id="{{ room|title }}" class="select-room cursor-pointer"></p>
                     {% endfor %}
                 </nav>
                 <!-- Sidebar end -->

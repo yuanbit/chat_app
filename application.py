@@ -1,10 +1,14 @@
 import time
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, flash, request, session
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
 from wtform_fields import *
 from models import *
+
+from aylienapiclient import textapi
+
+client = textapi.Client("44c6b5b6", "f88daf87ca37572a813da7425a46685b")
 
 # Configure app
 app = Flask(__name__)
@@ -18,7 +22,9 @@ db = SQLAlchemy(app)
 # Initialize Flask-SocketIO
 socketio = SocketIO(app)
 
-ROOMS = ['lounge', 'news', 'games', 'coding']
+ROOMS = ['Chatroom']
+
+connected_users = []
 
 # Configure flask login
 login = LoginManager(app)
@@ -116,6 +122,31 @@ def page_not_found(e):
     # note that we set the 404 status explicitly
     return render_template('404.html'), 404
 
+#users_online = {}
+
+# @socketio.on('connect')
+# def client_connect():
+#     print(current_user.username + " connected")
+#
+#     if current_user.username not in connected_users:
+#         connected_users.append(current_user.username)
+#
+#     print(connected_users)
+#
+#     for users in connected_users:
+#         emit("MESSAGE", users)
+#
+# @socketio.on('disconnect')
+# def client_disconnect():
+#     print(current_user.username + " disconnected")
+#
+#     if current_user.username in connected_users:
+#         connected_users.remove(current_user.username)
+#
+#     for users in connected_users:
+#         emit("MESSAGE", connected_users)
+
+
 # Create event handler/bucket
 @socketio.on('message')
 def message(data):
@@ -126,6 +157,16 @@ def message(data):
     msg = data["msg"]
     username = data["username"]
     room = data["room"]
+
+    sentiment = client.Sentiment({'text': msg})
+
+    if sentiment['polarity'] == "positive":
+        msg += " :)"
+    elif sentiment['polarity'] == "negative":
+        msg += " :("
+    else:
+        msg += " :|"
+
     # Broadcast message received to all connected clients
     # Default push data to clients
     # %b - abbreviated month name
@@ -139,6 +180,8 @@ def message(data):
     # Send data to custom event bucket
     #emit('some-event', 'this is a custom event message')
 
+
+
 @socketio.on('join')
 def on_join(data):
     """User joins a room"""
@@ -147,8 +190,16 @@ def on_join(data):
     room = data["room"]
     join_room(room)
 
+    # if current_user.username not in connected_users:
+    #     connected_users.append(current_user.username)
+    #
+    # print(connected_users)
+
     # Broadcast that new user has joined
-    send({"msg": username + " has joined the " + room + " room."}, room=room)
+    send({"msg": username + " has joined the chat."}, room=room)
+
+    #send(connected_users)
+
 
 @socketio.on('leave')
 def on_leave(data):
@@ -158,7 +209,12 @@ def on_leave(data):
     room = data['room']
     leave_room(room)
 
-    send({"msg": username + " has left the room"}, room=room)
+    # if current_user.username in connected_users:
+    #     connected_users.remove(current_user.username)
+
+    send({"msg": username + " has left the chat."}, room=room)
+
+    #send(connected_users)
 
 if __name__ == "__main__":
 

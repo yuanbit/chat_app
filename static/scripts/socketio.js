@@ -3,12 +3,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
+    // socket.on("MESSAGE", data => {
+    //
+    //   // const connected_users = data;
+    //   //
+    //   // console.log(connected_users)
+    //   // var str = '<ul>'
+    //   // var str = ''
+    //   //
+    //   // data.forEach(function(user) {
+    //   //   str += '<li>'+ user + '</li>';
+    //   // });
+    //   //
+    //   // str += '</ul>';
+    //   // document.getElementById("display-online-users").innerHTML = str;
+    //
+    //   // const p = document.createElement('p');
+    //   // p.setAttribute("class", "system-msg");
+    //   // p.innerHTML = data;
+    //   // document.querySelector('#display-online-users').append(p);
+    //
+    // });
+
     // Retrieve username
     const username = document.querySelector('#get-username').innerHTML;
 
     // Set default room
-    let room = "Lounge"
-    joinRoom("Lounge");
+    let room = "Chatroom"
+    joinRoom("Chatroom");
 
     // Send messages
     document.querySelector('#send_message').onclick = () => {
@@ -27,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const span_username = document.createElement('span');
             const span_timestamp = document.createElement('span');
             const br = document.createElement('br')
+
             // Display user's own message
             if (data.username == username) {
                     p.setAttribute("class", "my-msg");
@@ -109,6 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Join room
         socket.emit('join', {'username': username, 'room': room});
 
+        //printSysMsg(data.online_users);
+
         // Highlight selected room
         document.querySelector('#' + CSS.escape(room)).style.color = "#ffc107";
         document.querySelector('#' + CSS.escape(room)).style.backgroundColor = "white";
@@ -118,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Autofocus on text box
         document.querySelector("#user_message").focus();
+
     }
 
     // Scroll chat window down
