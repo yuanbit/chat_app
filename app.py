@@ -1,5 +1,5 @@
 # Main application
-
+import os
 import time
 from flask import Flask, render_template, redirect, url_for, flash, request, session, Response
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
@@ -14,10 +14,10 @@ client = textapi.Client("44c6b5b6", "f88daf87ca37572a813da7425a46685b")
 
 # Configure app
 app = Flask(__name__)
-app.secret_key = 'replace later'
+app.secret_key = os.environ.get('SECRET')
 
 # Configure database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://uglcakesytydkw:a531b221acaeaf035634fb709b4bbe8d84995411718c1101104d7866fdfcdc70@ec2-174-129-33-201.compute-1.amazonaws.com:5432/d1jr4qvs8g9vgl'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
 # Initialize database
 db = SQLAlchemy(app)
@@ -180,5 +180,4 @@ def handle_leave_event(data):
 
 if __name__ == "__main__":
 
-    # Start the server, restart server when file changed
-    app.run(debug=True)
+    app.run()
