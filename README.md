@@ -5,6 +5,6 @@
 
 • Database using PostgreSQL
 
-• Sentiment Analysis using AYLIEN Text Analysis API
+• Sentiment Analysis using AYLIEN Text Analysis API: the emojis :), :(, or :| will be displayed at the end of each message depending on the detected emotion
 
 • Deployed using Heroku: https://flask-chat-yuan.herokuapp.com/
