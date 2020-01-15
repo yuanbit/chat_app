@@ -49,7 +49,7 @@ html, body {
 }
 
 
-#rightside-pannel {
+#rightside-panel {
     overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
 }
 

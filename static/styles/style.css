@@ -6,7 +6,12 @@ html, body {
   text-align: center;
 }
 
-h2, h3 {
+.success {
+  color: white;
+  font-size: 20px;
+}
+
+h2, h3, h4 {
     color: #2DA6FF;
     border-bottom: 10px;
 }
