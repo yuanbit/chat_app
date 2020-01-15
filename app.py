@@ -117,7 +117,7 @@ def logout():
 
 # Route for non-existent pages
 @app.errorhandler(404)
-def page_not_found():
+def page_not_found(e):
     # Set 404 status and display error page
     return render_template('404.html'), 404
 
