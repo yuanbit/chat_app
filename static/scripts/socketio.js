@@ -3,18 +3,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-    // Retrieve username
+    // Get username
     const username = document.querySelector('#get-username').innerHTML;
 
     // Set default room
     let room = "Chatroom"
+    // Join Chatroom
     joinRoom("Chatroom");
 
     // Send messages
     document.querySelector('#send_message').onclick = () => {
+
+        // Send message
         socket.emit('message', {'msg': document.querySelector('#user_message').value,
             'username': username, 'room': room});
 
+        // Clear typed message once it's sent
         document.querySelector('#user_message').value = '';
     };
 
@@ -31,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Display user's own message
             if (data.username == username) {
                     p.setAttribute("class", "my-msg");
-
                     // Username
                     span_username.setAttribute("class", "my-username");
                     span_username.innerText = data.username;
@@ -43,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // HTML to append
                     p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML
 
-                    //Append
+                    // Append and display in right panel
                     document.querySelector('#display-message-section').append(p);
             }
             // Display other users' messages
@@ -65,42 +68,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 //Append
                 document.querySelector('#display-message-section').append(p);
             }
-            // Display system message
+            // Display system message - user activities
             else {
                 printSysMsg(data.msg);
             }
 
-
         }
+        // Scroll chat window down
         scrollDownChatWindow();
     });
 
-
-    // Logout from chat
+    // Leave the chatroom
     document.querySelector("#logout-btn").onclick = () => {
         leaveRoom(room);
     };
 
-    // Trigger 'leave' event if user was previously on a room
+    // Send leave event to server
     function leaveRoom(room) {
         socket.emit('leave', {'username': username, 'room': room});
-
     }
 
-
-    // Trigger 'join' event
+    // Send join event to server
     function joinRoom(room) {
 
         // Join room
         socket.emit('join', {'username': username, 'room': room});
 
-
         // Clear message area
         document.querySelector('#display-message-section').innerHTML = '';
 
-        // Autofocus on text box
+        // Focus on text box
         document.querySelector("#user_message").focus();
-
     }
 
     // Scroll chat window down
@@ -109,11 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
         chatWindow.scrollTop = chatWindow.scrollHeight;
     }
 
-    // Print system messages
+    // Print system messages - user activities
     function printSysMsg(msg) {
         const p = document.createElement('p');
         p.setAttribute("class", "system-msg");
         p.innerHTML = msg;
+        // Display on the side panel
         document.querySelector('#display-online-users').append(p);
 
         scrollDownChatWindow()

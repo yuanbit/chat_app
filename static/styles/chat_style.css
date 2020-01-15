@@ -21,12 +21,12 @@ html, body {
 }
 
 .wrapper {
-    display: flex;
+  display: flex;
 }
 
 #main-section {
-    overflow: hidden; /* Makee this div contain its floated children */
-    width: 100%;
+  overflow: hidden;
+  width: 100%;
 }
 
 .online_label {
@@ -36,28 +36,27 @@ html, body {
 }
 
 #sidebar {
-    margin-top: 2em;
-    float: left;
-    min-height: 96vh;
-    padding-top: 3em;
-    border-right: 0.5px solid #898c91;
-    background-color: #252525;
+  margin-top: 2em;
+  float: left;
+  min-height: 96vh;
+  padding-top: 3em;
+  border-right: 0.5px solid #898c91;
+  background-color: #252525;
 }
 
 #sidebar p {
-    color: white;
+  color: white;
 }
 
-
 #rightside-panel {
-    overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
+  overflow: hidden; /*Fill horizontal space*/
 }
 
 #display-message-section {
     margin-top: 5em;
     min-height: 82vh;
     max-height: 82vh;
-    overflow-y: auto; /*Make  this section scrolable */
+    overflow-y: auto; /*Make this section scrolable */
 }
 
 #input-area {
@@ -77,83 +76,81 @@ input[type=text]:focus{
 }
 
 .others-msg {
-    margin-right: 60%;
-    margin-left: 1em;
-    padding: 0.5em 0.5em 0.5em 1em;
-    border-radius: 5px;
-    border-color: grey;
-    border-width: 1px;
-    border-style: solid;
-    background-color: #252525;
-    color: white;
-    /* animation */
-    animation-name: fadeIn;
-    animation-duration: 0.75s;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
+  margin-right: 60%;
+  margin-left: 1em;
+  padding: 0.5em 0.5em 0.5em 1em;
+  border-radius: 5px;
+  border-color: grey;
+  border-width: 1px;
+  border-style: solid;
+  background-color: #252525;
+  color: white;
+  /* animation */
+  animation-name: fadeIn;
+  animation-duration: 0.75s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
 }
 
 .my-msg {
-    margin-left: 60%;
-    margin-right:1em;
-    padding: 0.5em 0.5em 0.5em 1em;
-    border-radius: 5px;
-    border-color: white;
-    border-width: 1px;
-    border-style: solid;
-    background-color: #2DA6FF;
-    color: white;
-    font-size: 1em;
-    /* animation */
-    animation-name: fadeIn;
-    animation-duration: 0.75s;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
+  margin-left: 60%;
+  margin-right:1em;
+  padding: 0.5em 0.5em 0.5em 1em;
+  border-radius: 5px;
+  border-color: white;
+  border-width: 1px;
+  border-style: solid;
+  background-color: #2DA6FF;
+  color: white;
+  font-size: 1em;
+  /* animation */
+  animation-name: fadeIn;
+  animation-duration: 0.75s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
 }
 
 .system-msg {
-
-    padding-left: 20px;
-    padding-right: 20px;
-    font-size: 1.1em;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 1.1em;
 }
 
 .timestamp {
-    color: white;
-    font-size:0.8em;
+  color: white;
+  font-size:0.8em;
 }
 
 .other-username {
-    font-weight: bold;
-    font-size: 1.3em;
-    color: #055BC9;
+  font-weight: bold;
+  font-size: 1.3em;
+  color: #055BC9;
 }
 
 .my-username {
-    font-weight: bold;
-    font-size: 1.3em;
-    color: #055BC9;
+  font-weight: bold;
+  font-size: 1.3em;
+  color: #055BC9;
 }
 
 #msg-input {
-    border-color: #2DA6FF;
-    border-width: 5px;
+  border-color: #2DA6FF;
+  border-width: 5px;
 }
 
 #get-username {
-    display: none !important;
+  display: none !important;
 }
 
 .btn, .btn:hover, .btn-success:hover, .btn-success:active, .btn-success:focus {
-    color: #fff !important;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: #2DA6FF !important;
-
-    border-radius: 5px;
-    display: inline-block;
-    border: none;
-    width: 100%;
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #2DA6FF !important;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  width: 100%;
 }
 
 .btn:focus, .btn:active {

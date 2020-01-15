@@ -6,14 +6,9 @@ html, body {
   text-align: center;
 }
 
-.success {
-  color: white;
-  font-size: 20px;
-}
-
-h2, h3, h4 {
-    color: #2DA6FF;
-    border-bottom: 10px;
+h2, h4 {
+  color: #2DA6FF;
+  border-bottom: 10px;
 }
 
 h3 {
@@ -21,23 +16,12 @@ h3 {
   color: #B4B4B4;
 }
 
-.login {
-  padding-top: 20%;
-}
-
 p {
   color: white;
   font-size: 18px;
 }
 
-.reg_label h5 {
-  text-align: left;
-
-  color: #B4B4B4;
-}
-
 a{
-
   font-size: 20px;
   color: #2DA6FF;
 }
@@ -49,36 +33,43 @@ a:hover{
 
 hr {
   background-color: white;
+}
 
+.success, .danger {
+  color: white;
+  font-size: 20px;
+}
+
+.login {
+  padding-top: 20%;
+}
+
+.reg_label h5 {
+  text-align: left;
+  color: #B4B4B4;
 }
 
 #main-section {
-    overflow: hidden;
-    width: 100%;
+  overflow: hidden;
+  width: 100%;
 }
-
 
 #form {
-      margin-left: 30%;
-      margin-right: 30%;
-      width: 40%;
+  margin-left: 30%;
+  margin-right: 30%;
+  width: 40%;
 }
-
-h2 {
-    color: #5b9cfc;
-}
-
 
 .btn, .btn:hover, .btn-success:hover, .btn-success:active, .btn-success:focus {
-    color: #fff !important;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: #2DA6FF !important;
-    padding: 10px;
-    border-radius: 5px;
-    display: inline-block;
-    border: none;
-    width: 100%;
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #2DA6FF !important;
+  padding: 10px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  width: 100%;
 }
 
 .btn:focus, .btn:active {
@@ -86,16 +77,14 @@ h2 {
   box-shadow: none !important;
 }
 
-
 .formError li{
-
-    padding-top: 10px;
-    color: red;
-    text-align: left;
+  padding-top: 10px;
+  color: red;
+  text-align: left;
 
 }
 
 input[type='text']:focus, input[type='password']:focus {
-    border-color: #2DA6FF;
-    box-shadow: 0px 1px 1px inset, 0px 0px 10px #2DA6FF;
+  border-color: #2DA6FF;
+  box-shadow: 0px 1px 1px inset, 0px 0px 10px #2DA6FF;
 }​
