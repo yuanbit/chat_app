@@ -1,5 +1,5 @@
 import time
-from flask import Flask, render_template, redirect, url_for, flash, request, session
+from flask import Flask, render_template, redirect, url_for, flash, request, session, Response
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
@@ -7,6 +7,8 @@ from wtform_fields import *
 from models import *
 
 from aylienapiclient import textapi
+from datetime import datetime
+
 
 client = textapi.Client("44c6b5b6", "f88daf87ca37572a813da7425a46685b")
 
@@ -24,7 +26,7 @@ socketio = SocketIO(app)
 
 ROOMS = ['Chatroom']
 
-connected_users = []
+time_stamp = time.strftime('%b %d, %Y %I:%M:%S %p', time.localtime())
 
 # Configure flask login
 login = LoginManager(app)
@@ -97,19 +99,41 @@ def login():
 
     return render_template("login.html", form=login_form)
 
+
+# @app.before_request
+# def mark_online():
+#     global online_users
+#     if not online_users.get(current_user.get_id(), "") and current_user.get_id():
+#         online_users[current_user.get_id()] = copy(current_user)
 # Route (protected) for chat application page - only a logged in user can view
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
+    # online_users = currently_online_users()
+    #
+    # print("hi")
+    # print(online_users)
+    #
+    # for key,val in online_users.items():
+    #     print(val.username)
+    # users = User.query.all()
+    #
+    # for user in users:
+    #     print(user.username)
+
     # User access protected chat page w/o logging in
     if not current_user.is_authenticated:
         # Error message to match bootstrap class
         flash('Please login.', 'danger')
         # Redirect to login page
         return redirect(url_for('login'))
+
+
+
     return render_template('chat.html', username=current_user.username, rooms=ROOMS)
 
 # Route for logout
 @app.route("/logout", methods=['GET'])
+@login_required
 def logout():
 
     logout_user()
@@ -122,30 +146,36 @@ def page_not_found(e):
     # note that we set the 404 status explicitly
     return render_template('404.html'), 404
 
-#users_online = {}
+connected_users = []
 
-# @socketio.on('connect')
-# def client_connect():
-#     print(current_user.username + " connected")
+# @socketio.on('connected_user')
+# def connected_user(data):
 #
-#     if current_user.username not in connected_users:
-#         connected_users.append(current_user.username)
-#
-#     print(connected_users)
-#
-#     for users in connected_users:
-#         emit("MESSAGE", users)
-#
-# @socketio.on('disconnect')
-# def client_disconnect():
-#     print(current_user.username + " disconnected")
-#
-#     if current_user.username in connected_users:
-#         connected_users.remove(current_user.username)
-#
-#     for users in connected_users:
-#         emit("MESSAGE", connected_users)
+#     send({"msg2": data + " is online on " + time_stamp})
 
+
+    # global connected_users
+    #
+    # if current_user.username not in connected_users:
+    #     connected_users.append(current_user.username)
+    #
+    # print(connected_users)
+
+    #emit("connected_users", connected_users)
+
+
+@socketio.on('disconnect')
+def client_disconnect():
+    print(current_user.username + " disconnected")
+
+    global connected_users
+
+    if current_user.username in connected_users:
+        connected_users.remove(current_user.username)
+
+    print(connected_users)
+
+    emit("connected_users", connected_users)
 
 # Create event handler/bucket
 @socketio.on('message')
@@ -167,6 +197,8 @@ def message(data):
     else:
         msg += " :|"
 
+    global time_stamp
+
     # Broadcast message received to all connected clients
     # Default push data to clients
     # %b - abbreviated month name
@@ -174,13 +206,11 @@ def message(data):
     # %I - hour
     # %p - AM or PM
     # %M - minutes
-    time_stamp = time.strftime('%b-%d %I:%M%p', time.localtime())
+    #time_stamp = time.strftime('%A, %b %d, %Y %I:%M %p', time.localtime())
 
     send({"username": username, "msg": msg, "time_stamp": time_stamp}, room=room)
     # Send data to custom event bucket
     #emit('some-event', 'this is a custom event message')
-
-
 
 @socketio.on('join')
 def on_join(data):
@@ -190,15 +220,10 @@ def on_join(data):
     room = data["room"]
     join_room(room)
 
-    # if current_user.username not in connected_users:
-    #     connected_users.append(current_user.username)
-    #
-    # print(connected_users)
+    global time_stamp
 
     # Broadcast that new user has joined
-    send({"msg": username + " has joined the chat."}, room=room)
-
-    #send(connected_users)
+    send({"msg": username + " is online on " + time_stamp}, room=room)
 
 
 @socketio.on('leave')
@@ -209,10 +234,12 @@ def on_leave(data):
     room = data['room']
     leave_room(room)
 
+    global time_stamp
+
     # if current_user.username in connected_users:
     #     connected_users.remove(current_user.username)
 
-    send({"msg": username + " has left the chat."}, room=room)
+    send({"msg": username + " is offline on " + time_stamp}, room=room)
 
     #send(connected_users)
 

@@ -3,28 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-    // socket.on("MESSAGE", data => {
-    //
-    //   // const connected_users = data;
-    //   //
-    //   // console.log(connected_users)
-    //   // var str = '<ul>'
-    //   // var str = ''
-    //   //
-    //   // data.forEach(function(user) {
-    //   //   str += '<li>'+ user + '</li>';
-    //   // });
-    //   //
-    //   // str += '</ul>';
-    //   // document.getElementById("display-online-users").innerHTML = str;
-    //
-    //   // const p = document.createElement('p');
-    //   // p.setAttribute("class", "system-msg");
-    //   // p.innerHTML = data;
-    //   // document.querySelector('#display-online-users').append(p);
-    //
-    // });
-
     // Retrieve username
     const username = document.querySelector('#get-username').innerHTML;
 
@@ -70,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             // Display other users' messages
             else if (typeof data.username !== 'undefined') {
+
                 p.setAttribute("class", "others-msg");
 
                 // Username
@@ -126,17 +105,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
     // Trigger 'join' event
     function joinRoom(room) {
 
         // Join room
         socket.emit('join', {'username': username, 'room': room});
 
-        //printSysMsg(data.online_users);
-
-        // Highlight selected room
-        document.querySelector('#' + CSS.escape(room)).style.color = "#ffc107";
-        document.querySelector('#' + CSS.escape(room)).style.backgroundColor = "white";
 
         // Clear message area
         document.querySelector('#display-message-section').innerHTML = '';
@@ -157,7 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const p = document.createElement('p');
         p.setAttribute("class", "system-msg");
         p.innerHTML = msg;
-        document.querySelector('#display-message-section').append(p);
+        document.querySelector('#display-online-users').append(p);
+
         scrollDownChatWindow()
 
         // Autofocus on text box
