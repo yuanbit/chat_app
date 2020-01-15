@@ -75,21 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollDownChatWindow();
     });
 
-    // Select a room
-    document.querySelectorAll('.select-room').forEach(p => {
-        p.onclick = () => {
-            let newRoom = p.innerHTML
-            // Check if user already in the room
-            if (newRoom === room) {
-                msg = `You are already in ${room} room.`;
-                printSysMsg(msg);
-            } else {
-                leaveRoom(room);
-                joinRoom(newRoom);
-                room = newRoom;
-            }
-        };
-    });
 
     // Logout from chat
     document.querySelector("#logout-btn").onclick = () => {
@@ -100,9 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function leaveRoom(room) {
         socket.emit('leave', {'username': username, 'room': room});
 
-        document.querySelectorAll('.select-room').forEach(p => {
-            p.style.color = "black";
-        });
     }
 
 

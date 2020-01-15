@@ -1,5 +1,4 @@
 <!--Registration Page-->
-
 <!-- Import macros -->
 {% from 'form_helper.html' import displayField %}
 
@@ -10,38 +9,42 @@
 {% block title %}Registration {% endblock %}
 
 {% block content %}
-  <h1>Get started</h1>
-  <p>First time here? Register to start using Rchat</p>
+<div class="reg_title">
+  <h2>Flask Chat</h2>
+  <h3>Create your account</h3>
+  <p>Register now to start chatting!</p>
+  <hr>
+</div>
 
   <!--Render validators-->
   <form action="{{ url_for('index')}}", method="POST">
 
-    <div class="reg_label">First name
-      {{ displayField(form.first_name, 'First name', autocomplete='off')}}
+    <div class="reg_label">
+      {{ displayField(form.first_name, 'First name', autocomplete='off', placeholder="First name")}}
     </div>
 
-    <div class="reg_label">Last name
-      {{ displayField(form.last_name, 'Last name')}}
+    <div class="reg_label">
+      {{ displayField(form.last_name, 'Last name', placeholder="Last name")}}
     </div>
 
-    <div class="reg_label">Username
-      {{ displayField(form.username, 'Username')}}
+    <div class="reg_label">
+      {{ displayField(form.username, 'Username', placeholder="Username")}}
     </div>
 
-    <div class="reg_label">Email
-      {{ displayField(form.email, 'Email')}}
+    <div class="reg_label">
+      {{ displayField(form.email, 'Email', placeholder="Email")}}
     </div>
 
-    <div class="reg_label">Password
-      {{ displayField(form.password, 'Password')}}
+    <div class="reg_label">
+      {{ displayField(form.password, 'Password', placeholder="Password")}}
     </div>
 
-    <div class="reg_label">Password confirmation
-      {{ displayField(form.confirm_pswd, 'Retype Password')}}
+    <div class="reg_label">
+      {{ displayField(form.confirm_pswd, 'Retype Password', placeholder="Retype password")}}
     </div>
 
     <div class="form-group">
-      <input type="submit" value="Create" class="btn btn-warning">
+      <input type="submit" value="Register" class="btn btn-warning">
     </div>
 
     <!--use app's secret key-->
@@ -50,5 +53,5 @@
 
   <hr>
 
-  <p>Already registered? <a href={{url_for('login')}}>Login here</a>.</p>
+  <p>Already have an account? <a href={{url_for('login')}}>Login here</a></p>
 {% endblock %}
