@@ -5,6 +5,6 @@
 
 • Database using PostgreSQL
 
-• Sentiment Analysis using AYLIEN Text Analysis API (https://docs.aylien.com/textapi/#getting-started)
+• Sentiment Analysis using AYLIEN Text Analysis API
 
 • Deployed using Heroku: https://flask-chat-yuan.herokuapp.com/
