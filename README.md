@@ -1,4 +1,4 @@
-## Single Channel Chat Application with Sentiment Analysis with Flask-SocketIO
+## Single Channel Chat Application with Sentiment Analysis
 
 ### Features:
 • Implemented with Python Flask-SocketIO
