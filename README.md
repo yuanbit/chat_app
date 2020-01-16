@@ -1,6 +1,6 @@
-## Single Channel Chat Application with Sentiment Analysis
+# Single Channel Chat Application with Sentiment Analysis
 
-### Features:
+## Features:
 • Implemented with Python Flask-SocketIO
 
 • Database using PostgreSQL
@@ -11,7 +11,7 @@
 
 • Deployed using Heroku: https://flask-chat-yuan.herokuapp.com/
 
-### Files:
+## Files:
 
 **• app.py:** Main application file for the route of the registration and login page as well as the Flask-SocketIO communication with the client
 
