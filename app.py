@@ -8,9 +8,10 @@ from aylienapiclient import textapi
 
 from wtform_fields import *
 from db import *
+import config
 
 # Aylien for sentiment analysis
-client = textapi.Client("44c6b5b6", "f88daf87ca37572a813da7425a46685b")
+client = textapi.Client(config.api_id, config.api_key)
 
 # Configure app
 app = Flask(__name__)
